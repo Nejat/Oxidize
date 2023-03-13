@@ -36,14 +36,31 @@ to more ergonomically exit the current operation on fail conditions.
 ### Memory Allocations 
 
 This method does introduce an additional memory allocation<sup>*</sup> for the successful 
-scenario of an operation. However the failed scenario, arguably, has the same or similar 
-allocations compared to when exceptions are thrown, but without the performance hit of 
-exception handling. 
+scenario of an operation. However the failed scenario, ~~arguably, has the same or similar 
+allocations compared to when exceptions are thrown, but~~ [allocates](Benchmarks/README.md) 
+almost a one third the memory of throwing an exception, as a bonus without the 
+[performance](Benchmarks/README.md) hit of exception handling. 
 
 _* an implementation of a lightweight_ `Enuemration`_or_ `Union` _in .Net would solve this issue_
 
+## Usage Recommendations
 
-## Types
+Usage recommendation based on the outcome of the [benchmarks](Benchmarks)
+
+### Recommended
+
+* When you need a `ICollection<T>` or `IEnumerable<T>` of both success and fail results
+* When the majority of the time an operation throws an exception to signal failure and 
+it is impacting performance or memory usage
+* When the majority of the results of an operation are success and performance and/or 
+* memory usage is not an issue
+
+### Not Recommended 
+
+* When the majority of the results of an operation are success and performance and/or 
+memory usage is an issue
+
+## Oxidized API
 
 ### `IResult{T}`
 
